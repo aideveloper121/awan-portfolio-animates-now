@@ -83,8 +83,13 @@ const skillCategories = [
 
 export const SkillsSection = () => {
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-20 bg-muted/30 relative overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute inset-0 bg-gradient-mesh opacity-20" />
+      <div className="absolute top-20 left-20 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-20 w-40 h-40 bg-accent/5 rounded-full blur-3xl" />
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -108,21 +113,55 @@ export const SkillsSection = () => {
           {skillCategories.map((category, categoryIndex) => (
             <motion.div
               key={category.title}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -10 }}
-              className="h-full"
+              initial={{ opacity: 0, y: 50, rotateY: -15 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+              transition={{ 
+                duration: 0.8, 
+                delay: categoryIndex * 0.15,
+                ease: "easeOut"
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                y: -15, 
+                rotateY: 5,
+                scale: 1.02,
+                transition: { duration: 0.3 }
+              }}
+              className="h-full perspective-1000"
             >
-              <Card className="h-full hover:shadow-glow transition-all duration-300 border-0 bg-gradient-card">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className={`p-3 rounded-lg bg-gradient-to-r ${category.color} text-white`}>
+              <Card className="h-full hover:shadow-glow transition-all duration-500 border-0 bg-gradient-card backdrop-blur-sm shadow-elevation relative overflow-hidden group">
+                {/* Animated Background Glow */}
+                <div className={`absolute inset-0 bg-gradient-to-r ${category.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+                
+                <CardContent className="p-6 relative z-10">
+                  <motion.div 
+                    className="flex items-center gap-4 mb-6"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: categoryIndex * 0.1 + 0.3, duration: 0.6 }}
+                    viewport={{ once: true }}
+                  >
+                    <motion.div 
+                      className={`p-3 rounded-lg bg-gradient-to-r ${category.color} text-white shadow-lg relative overflow-hidden`}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <motion.div
+                        className="absolute inset-0 bg-white/20"
+                        initial={{ x: -100, opacity: 0 }}
+                        whileHover={{ x: 100, opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                      />
                       {category.icon}
-                    </div>
-                    <h3 className="text-xl font-semibold">{category.title}</h3>
-                  </div>
+                    </motion.div>
+                    <motion.h3 
+                      className="text-xl font-semibold"
+                      whileHover={{ x: 5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      {category.title}
+                    </motion.h3>
+                  </motion.div>
 
                   <div className="space-y-4">
                     {category.skills.map((skill, skillIndex) => (
@@ -131,28 +170,71 @@ export const SkillsSection = () => {
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ 
-                          duration: 0.4, 
-                          delay: categoryIndex * 0.1 + skillIndex * 0.1 
+                          duration: 0.6, 
+                          delay: categoryIndex * 0.1 + skillIndex * 0.15,
+                          ease: "easeOut"
                         }}
                         viewport={{ once: true }}
-                        className="space-y-2"
+                        whileHover={{ x: 5 }}
+                        className="space-y-3 p-3 rounded-lg hover:bg-muted/30 transition-all duration-300 cursor-pointer group/skill"
                       >
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">{skill.name}</span>
-                          <Badge variant="secondary" className="text-xs">
-                            {skill.level}%
-                          </Badge>
-                        </div>
-                        <div className="w-full bg-muted rounded-full h-2">
+                          <motion.span 
+                            className="font-medium group-hover/skill:text-primary transition-colors duration-300"
+                            whileHover={{ scale: 1.05 }}
+                          >
+                            {skill.name}
+                          </motion.span>
                           <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.level}%` }}
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
                             transition={{ 
-                              duration: 1, 
-                              delay: categoryIndex * 0.1 + skillIndex * 0.1 + 0.3 
+                              delay: categoryIndex * 0.1 + skillIndex * 0.15 + 0.3,
+                              type: "spring",
+                              stiffness: 200
                             }}
                             viewport={{ once: true }}
-                            className={`h-2 rounded-full bg-gradient-to-r ${category.color}`}
+                          >
+                            <Badge 
+                              variant="secondary" 
+                              className={`text-xs font-bold bg-gradient-to-r ${category.color} text-white group-hover/skill:shadow-glow transition-all duration-300`}
+                            >
+                              {skill.level}%
+                            </Badge>
+                          </motion.div>
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-3 overflow-hidden relative">
+                          <motion.div
+                            initial={{ width: 0, opacity: 0.7 }}
+                            whileInView={{ width: `${skill.level}%`, opacity: 1 }}
+                            transition={{ 
+                              duration: 1.5, 
+                              delay: categoryIndex * 0.1 + skillIndex * 0.15 + 0.5,
+                              ease: "easeOut"
+                            }}
+                            viewport={{ once: true }}
+                            className={`h-3 rounded-full bg-gradient-to-r ${category.color} relative overflow-hidden group-hover/skill:shadow-glow transition-all duration-300`}
+                          >
+                            <motion.div
+                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                              animate={{ x: [-100, 200] }}
+                              transition={{ 
+                                duration: 2, 
+                                repeat: Infinity, 
+                                repeatDelay: 3,
+                                ease: "easeInOut"
+                              }}
+                            />
+                          </motion.div>
+                          <motion.div
+                            className={`absolute top-0 left-0 h-3 bg-gradient-to-r ${category.color} opacity-30`}
+                            initial={{ width: 0 }}
+                            whileInView={{ width: "100%" }}
+                            transition={{ 
+                              duration: 0.8, 
+                              delay: categoryIndex * 0.1 + skillIndex * 0.15 + 0.3
+                            }}
+                            viewport={{ once: true }}
                           />
                         </div>
                       </motion.div>
