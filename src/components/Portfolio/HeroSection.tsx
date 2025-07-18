@@ -84,28 +84,12 @@ export const HeroSection = () => {
 
           {/* Name */}
           <motion.h1
-            initial={{ opacity: 0, scale: 0.8, rotateX: -30 }}
-            animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-            transition={{ delay: 0.4, duration: 1.2, ease: "easeOut" }}
-            className="text-6xl md:text-8xl font-bold bg-gradient-hero bg-clip-text text-transparent animate-pulse-glow relative"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-6xl md:text-8xl font-bold bg-gradient-primary bg-clip-text text-transparent animate-glow"
           >
-            <span className="relative inline-block">
-              {"Mubashir Awan".split("").map((letter, index) => (
-                <motion.span
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    delay: 0.6 + index * 0.1, 
-                    duration: 0.8,
-                    ease: "easeOut"
-                  }}
-                  className="inline-block hover:scale-110 transition-transform duration-200"
-                >
-                  {letter === " " ? "\u00A0" : letter}
-                </motion.span>
-              ))}
-            </span>
+            Mubashir Awan
           </motion.h1>
 
           {/* Title */}
